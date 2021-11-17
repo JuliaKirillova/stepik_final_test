@@ -2,7 +2,7 @@ from selenium.common.exceptions import NoAlertPresentException # в начале
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from base_page import BasePage
-from locators import AddToBasketLocators
+from locators import ProductPageLocators
 import math
 import time
 
@@ -15,7 +15,7 @@ class ProductPage(BasePage):
 
     def add_to_basket(self):
         # Добавляем товар в корзину
-        link = self.browser.find_element(*AddToBasketLocators.ADD_TO_BASKET)
+        link = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)
         link.click()
 
     def solve_quiz_and_get_code(self):
@@ -37,16 +37,25 @@ class ProductPage(BasePage):
 
     def should_be_message_add_product_to_basket(self):
         # Проверяем сообщение о том, что товар добавлен в корзину
-        message_book_name = self.browser.find_element(*AddToBasketLocators.MESSAGE_BOOK_NAME)
+        message_book_name = self.browser.find_element(*ProductPageLocators.MESSAGE_BOOK_NAME)
         print(message_book_name.text)
-        book_name = self.browser.find_element(*AddToBasketLocators.BOOK_NAME)
+        book_name = self.browser.find_element(*ProductPageLocators.BOOK_NAME)
         print(book_name.text)
         assert message_book_name.text == book_name.text, "Not the same book"
 
     def should_be_message_price_product_to_basket(self):
         # Проверяем сообщение о цене товара после добавления в корзину
-        book_price = self.browser.find_element(*AddToBasketLocators.BOOK_PRICE)
+        book_price = self.browser.find_element(*ProductPageLocators.BOOK_PRICE)
         print(book_price.text)
-        message_book_price = self.browser.find_element(*AddToBasketLocators.MESSAGE_BOOK_PRICE)
+        message_book_price = self.browser.find_element(*ProductPageLocators.MESSAGE_BOOK_PRICE)
         print(message_book_price.text)
         assert book_price.text  == message_book_price.text, "Not the same price"
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), "Success message is presented"
+
+    def should_be_disappear_success_message(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), "Success message is not disappear"
+
+
+
