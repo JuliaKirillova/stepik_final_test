@@ -1,5 +1,8 @@
 from product_page import ProductPage
 import pytest
+from base_page import BasePage
+from basket_page import BasketPage
+
 
 # Тест на параметризацию
 @pytest.mark.parametrize('offer_number',
@@ -48,3 +51,12 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page = ProductPage(browser, link)
     page.open()
     page.go_to_login_page()
+
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+    page = BasePage(browser, link)
+    page.open() # Гость открывает страницу товара
+    page.go_to_basket_page() # Переходит в корзину по кнопке в шапке сайта
+    basket_page = BasketPage(browser, link)
+    basket_page.check_product_in_basket()# Ожидаем, что в корзине нет товаров
+    basket_page.check_basket_is_empty_message()# Ожидаем, что есть текст о том что корзина пуста
