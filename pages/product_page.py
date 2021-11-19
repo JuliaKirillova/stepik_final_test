@@ -1,10 +1,11 @@
-from selenium.common.exceptions import NoAlertPresentException # в начале файла
+from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from base_page import BasePage
 from locators import ProductPageLocators
 import math
 import time
+
 
 class ProductPage(BasePage):
     def add_product_to_basket_and_check_messages(self):
@@ -49,13 +50,12 @@ class ProductPage(BasePage):
         print(book_price.text)
         message_book_price = self.browser.find_element(*ProductPageLocators.MESSAGE_BOOK_PRICE)
         print(message_book_price.text)
-        assert book_price.text  == message_book_price.text, "Not the same price"
+        assert book_price.text == message_book_price.text, "Not the same price"
 
     def should_not_be_success_message(self):
+        # Проверяем, что нет сообщения о добавлении продукта в корзину
         assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), "Success message is presented"
 
     def should_be_disappear_success_message(self):
+        # Проверяем, что сообщение о добавлении продукта в корзину исчезает
         assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), "Success message is not disappear"
-
-
-
